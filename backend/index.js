@@ -62,7 +62,7 @@ app.post('/memes', function(req,res){
 });
 
 
-mongoose.connect(process.env.ATLAS_URI, 
+mongoose.connect("mongodb+srv://cluster0.xno2z.mongodb.net/test?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority",
     { 
         useNewUrlParser: true, 
         useUnifiedTopology: true, 
