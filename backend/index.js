@@ -46,7 +46,7 @@ app.get('/:id', function(req,res){
             caption:meme.caption
         }
     )})
-    .catch(errr=>res.json("Error: "+err));
+    .catch(err=>res.json("Error: "+err));
 })
 app.post('/memes', function(req,res){
     const { name, url, caption } = req.body;
