@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 const router = require('express').Router();
 const Meme = require('./models/Meme');
 const fs = require('fs');
-const credentials = fs.readFileSync('./certificates/X509-cert-1619338183590812891.pem');
+const credentials = fs.readFileSync(__dirname+'/certificates/X509-cert-1619338183590812891.pem');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 5000
