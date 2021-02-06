@@ -19,7 +19,7 @@ app.get('/',function(req,res){
     Meme
     .find()
     .sort({createdAt:-1})
-    .limit(2)
+    .limit(10)
     .then(memes=>res.json(
         memes.map(meme=>(
             {
@@ -61,6 +61,24 @@ app.post('/memes', function(req,res){
     })
 });
 
+app.patch('/:id', function(req,res){
+    Meme
+    .findByIdAndUpdate(
+        {_id: req.params.id},
+        {
+            name: req.body.name,
+            url: req.body.url,
+            caption: req.body.caption
+        },
+        function(err,result){
+            if(err){
+                res.json("Error: "+err);
+            } else {
+                res.json(result);
+            }
+        }
+    )
+})
 
 mongoose.connect("mongodb+srv://cluster0.xno2z.mongodb.net/test?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority",
     { 

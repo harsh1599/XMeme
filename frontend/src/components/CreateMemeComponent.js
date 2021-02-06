@@ -32,6 +32,7 @@ export default class CreateMemeComponent extends Component{
         }
 
         this.onSubmit = (e)=>{
+            e.preventDefault();
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -40,8 +41,9 @@ export default class CreateMemeComponent extends Component{
             // e.preventDefault();
             fetch("https://frozen-hamlet-23059.herokuapp.com/memes", requestOptions)
             .then(response=>response.json())
-            .then(response=>console.log("response on post: ",response));
+            .then(response=>{window.location="/"});
             console.log("current state: ", this.state);
+
         }
     }
     render(){
