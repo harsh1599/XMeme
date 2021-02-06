@@ -38,7 +38,7 @@ export default class CreateMemeComponent extends Component{
                 body: JSON.stringify(this.state)
             };
             // e.preventDefault();
-            fetch("http://localhost:5000/memes", requestOptions)
+            fetch("https://frozen-hamlet-23059.herokuapp.com/memes", requestOptions)
             .then(response=>response.json())
             .then(response=>console.log("response on post: ",response));
             console.log("current state: ", this.state);

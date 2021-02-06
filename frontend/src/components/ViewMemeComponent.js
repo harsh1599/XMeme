@@ -16,7 +16,7 @@ export default class ViewMemeComponent extends Component{
         }
     }
     componentDidMount(){
-        fetch("http://localhost:5000/"+this.state.id)
+        fetch("https://frozen-hamlet-23059.herokuapp.com/"+this.state.id)
         .then(res => res.json())
         .then(
             (result) => {

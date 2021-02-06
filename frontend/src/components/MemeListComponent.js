@@ -12,7 +12,7 @@ export default class MemeListComponent extends Component{
         }
     }
     componentDidMount(){
-        fetch("http://localhost:5000/")
+        fetch("https://frozen-hamlet-23059.herokuapp.com/")
         .then(res => res.json())
         .then(
             (result) => {
