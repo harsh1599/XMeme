@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import $ from 'jquery'
 
 export default class CreateMemeComponent extends Component{
     constructor(props){
@@ -41,7 +40,7 @@ export default class CreateMemeComponent extends Component{
             // e.preventDefault();
             fetch("https://frozen-hamlet-23059.herokuapp.com/memes", requestOptions)
             .then(response=>response.json())
-            .then(response=>{window.location="/"});
+            .then(_=>{window.location="/"});
             console.log("current state: ", this.state);
 
         }

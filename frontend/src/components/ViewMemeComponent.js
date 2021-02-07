@@ -1,6 +1,5 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { useParams } from 'react-router-dom';
 
 export default class ViewMemeComponent extends Component{
     constructor(props){
