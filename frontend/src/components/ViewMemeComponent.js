@@ -48,7 +48,7 @@ export default class ViewMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.userComment)
             };
-            fetch('http://localhost:5000/'+this.state.memeId+'/comments', requestOptions)
+            fetch('https://frozen-hamlet-23059.herokuapp.com/'+this.state.memeId+'/comments', requestOptions)
             .then(_=>{window.location="/"+this.state.memeId});
         }
     }
@@ -70,7 +70,7 @@ export default class ViewMemeComponent extends Component{
                 });
             }
         )
-        fetch("http://localhost:5000/"+this.state.memeId+"/comments")
+        fetch("https://frozen-hamlet-23059.herokuapp.com/"+this.state.memeId+"/comments")
         .then(res => res.json())
         .then(
             (result)=>{
