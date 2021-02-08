@@ -12,10 +12,11 @@ export default class CreateMemeComponent extends Component{
             caption: ""
         }
         
-        this.onChangeName = (e)=>{
-            this.setState({
+        this.onChangeName = async (e)=>{
+            await this.setState({
                 name: e.target.value
             })
+            console.log("naem: ", this.state.name);
         }
 
         this.onChangeUrl = (e)=>{

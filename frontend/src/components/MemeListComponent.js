@@ -2,6 +2,7 @@ import React, {Component} from 'react'
 import MemeComponent from './MemeComponent'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Modal } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 export default class MemeListComponent extends Component{
     constructor(props){
@@ -21,7 +22,7 @@ export default class MemeListComponent extends Component{
         this.onUpdate = async (e)=>{
             await this.setState({update:true});
             console.log("update: ",this.state.update);
-            console.log("id: ",e.target.id);
+            console.log("_id: ",e);
             fetch("https://frozen-hamlet-23059.herokuapp.com/"+e.target.id)
             .then(res=>res.json())
             .then(result=>{
@@ -114,8 +115,9 @@ export default class MemeListComponent extends Component{
                                             caption={meme.caption}
                                         />
                                     </li>
-                                    <li class="list-group-item">
+                                    <li class="list-group-item" >
                                         <button class="update" onClick={this.onUpdate} id={meme.id}>Update</button>
+                                        <Link to={"/"+meme.id}><button class="view">View</button></Link>
                                     </li>
                                 </ul>
                             )
