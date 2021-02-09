@@ -1,6 +1,6 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { Form, Card, FormGroup, Button, Row, Col } from 'react-bootstrap'
+import { Form, Card, FormGroup, Button, Row, Col, ListGroup, Badge } from 'react-bootstrap'
 
 export default class ViewMemeComponent extends Component{
     constructor(props){
@@ -18,7 +18,8 @@ export default class ViewMemeComponent extends Component{
                 memeId:props.match.params.id,
                 name:"",
                 text:""
-            }
+            },
+            disableUpdateSubmit:true
         }
         this.onCommentChange = async (e)=>{
             await this.setState({
@@ -83,12 +84,12 @@ export default class ViewMemeComponent extends Component{
     render(){
         return (
             <div className="container">
-                <ul class="list-group">
+                <ListGroup>
                     <Row>
                         <Col>
                             <Card>
                                 <Card.Body>
-                                    <Card.Title>{this.state.meme.name}</Card.Title>
+                                    <Card.Title><Badge variant='secondary'>{this.state.meme.name}</Badge></Card.Title>
                                     <Card.Text>
                                         {this.state.meme.caption}
                                     </Card.Text>
@@ -116,23 +117,28 @@ export default class ViewMemeComponent extends Component{
 
 
                     
-                    <ul class="list-group">
+                    <ListGroup>
+                        <ListGroup.Item>
+                            <h4><Badge variant="secondary">Comments</Badge></h4>
+                        </ListGroup.Item>
                         {
                             this.state.commentList.map(meme=>{
                                 return (
-                                    <ul class="list-group">
-                                        <li class="list-group-item">
-                                            <strong>{meme.name}</strong>
-                                        </li>
-                                        <li class="list-group-item">
-                                            {meme.text}
-                                        </li>
-                                    </ul>
+                                    <ListGroup.Item>
+                                        <ListGroup variant="flush">
+                                            <ListGroup.Item>
+                                                <strong>{meme.name}</strong>
+                                            </ListGroup.Item>
+                                            <ListGroup.Item>
+                                                {meme.text}
+                                            </ListGroup.Item>
+                                        </ListGroup>
+                                    </ListGroup.Item>
                                 )
                             })
                         }
-                    </ul>
-                </ul>
+                    </ListGroup>
+                </ListGroup>
             </div>
         )
     }
