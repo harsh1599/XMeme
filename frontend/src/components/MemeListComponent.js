@@ -1,7 +1,7 @@
 import React, {Component} from 'react'
 import MemeComponent from './MemeComponent'
 import 'bootstrap/dist/css/bootstrap.css'
-import { Modal } from 'react-bootstrap';
+import { Modal, Button, Card, Row, Col, Form, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
 export default class MemeListComponent extends Component{
@@ -12,7 +12,6 @@ export default class MemeListComponent extends Component{
             isLoaded:false,
             memeList: [],
             update: false,
-            preview: false,
             updateMeme:{
                 name: "",
                 url: "",
@@ -35,14 +34,25 @@ export default class MemeListComponent extends Component{
                     }
                 });
             })
+            this.setState({
+                disableUpdateSubmit:false
+            })
             // .then(res=>console.log('updateMeme: ',this.state.updateMeme));
         }
+        this.handleDisable = (e)=>{
+            if(this.state.updateMeme.name==""
+            || this.state.updateMeme.url==""
+            || this.state.updateMeme.caption==""
+            ){
+                this.setState({disableUpdateSubmit:true})
+            } else this.setState({disableUpdateSubmit:false})
+        }
         this.handleClose = async (e)=>{
-            await this.setState({update:false,preview:false});
+            await this.setState({update:false});
             console.log("update: ",this.state.update);
         }
         this.handleSubmit = (e)=>{
-            this.setState({update:false,preview:false});
+            this.setState({update:false});
             const requestOptions = {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
@@ -60,7 +70,7 @@ export default class MemeListComponent extends Component{
                     name: e.target.value
                 }
             })
-            console.log("Name: ",this.state.updateMeme.name);
+            this.handleDisable();
         }
         this.onChangeUrl = async (e)=>{
             await this.setState({
@@ -69,7 +79,7 @@ export default class MemeListComponent extends Component{
                     url: e.target.value
                 }
             })
-            console.log("Url: ",this.state.updateMeme.url)
+            this.handleDisable();
         }
         this.onChangeCaption = async (e)=>{
             await this.setState({
@@ -78,7 +88,7 @@ export default class MemeListComponent extends Component{
                     caption: e.target.value
                 }
             });
-            console.log("caption: ",this.state.updateMeme.caption)
+            this.handleClose();
         }
     }
 
@@ -105,24 +115,31 @@ export default class MemeListComponent extends Component{
             <div class="container">
                 <ul class="list-group">
                     {
-                        this.state.memeList.map(meme=>{
+                        this.state.memeList.map((meme,index)=>{
                             return (
-                                <ul class="list-group">
-                                    <li class="list-group-item">
-                                        <MemeComponent 
-                                            name={meme.name}
-                                            url={meme.url}
-                                            caption={meme.caption}
-                                        />
-                                    </li>
-                                    <li class="list-group-item" >
-                                        <button class="update" onClick={this.onUpdate} id={meme.id}>Update</button>
-                                        <Link to={"/"+meme.id}><button class="view">View</button></Link>
-                                    </li>
-                                </ul>
+                                <Row>
+                                    <Col>
+                                        <Card>
+                                            <Card.Body>
+                                                <Card.Title>{meme.name}</Card.Title>
+                                                <Card.Text>
+                                                    {meme.caption}
+                                                </Card.Text>
+                                                <Card.Img variant="bottom" src={meme.url}  />
+                                                <Card.Footer>
+                                                    <Button variant="primary" onClick={this.onUpdate} id={meme.id}>Update</Button>
+                                                    <Link to={"/"+meme.id}>
+                                                        <Button variant="primary" style={{marginLeft:'4px'}} onClick={this.on}>View</Button>
+                                                    </Link>
+                                                </Card.Footer>
+                                            </Card.Body>
+                                        </Card>
+                                    </Col>
+                                </Row>
                             )
-                        }) 
+                        })
                     }
+                    
                 </ul>
                 
                 <Modal style={{opacity:1}} show={this.state.update} onHide={this.handleClose} animation={true}>
@@ -130,37 +147,37 @@ export default class MemeListComponent extends Component{
                         Update
                     </Modal.Header>
                     <Modal.Body>
-                        <form>
-                            <div class="form-group">
+                        <Form>
+                            <FormGroup>
                                 <label for="name">Name:</label>
                                 <input type="text" class="form-control" id="name" 
                                     onChange={this.onChangeName} value={this.state.updateMeme.name}
                                     required
                                 />
-                            </div>
-                            <div class="form-group">
+                            </FormGroup>
+                            <FormGroup>
                                 <label for="url">Image URL:</label>
                                 <input type="text" class="form-control" id="url" 
                                     onChange={this.onChangeUrl} value={this.state.updateMeme.url}
                                     required 
                                 />
-                            </div>
-                            <div class="form-group">
+                            </FormGroup>
+                            <FormGroup>
                                 <label for="caption">Caption:</label>
                                 <input type="text" class="form-control" id="caption" 
                                     onChange={this.onChangeCaption} value={this.state.updateMeme.caption}
                                     required 
                                 />
-                            </div>
-                        </form>
+                            </FormGroup>
+                        </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <button onClick={this.handleSubmit}>
+                        <Button variant="primary" disabled={this.state.disableUpdateSubmit}
+                        onClick={this.handleSubmit}>
                             Submit
-                        </button>{' '}
-                        <button onClick={this.handleClose}>Cancel</button>
+                        </Button>{' '}
+                        <Button variant="danger" onClick={this.handleClose}>Cancel</Button>
                     </Modal.Footer>
-                    Hi
                 </Modal>
 
 

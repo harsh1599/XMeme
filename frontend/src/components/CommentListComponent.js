@@ -5,6 +5,7 @@ import Meme from '../../../backend/models/Meme';
 export default class MemeComponent extends Component{
     constructor(props){
         super(props);
+        
         this.state = {
             commentList:props.commmentList
         }
@@ -16,7 +17,7 @@ export default class MemeComponent extends Component{
                     this.state.commentList.map(comment=>{
                         return (
                             <li class="list-group-item">
-                                
+                                {comment.text}
                             </li>
                         )
                     })

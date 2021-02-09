@@ -1,5 +1,6 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
+import { Form, Card, FormGroup, Button, Row, Col } from 'react-bootstrap'
 
 export default class ViewMemeComponent extends Component{
     constructor(props){
@@ -39,10 +40,6 @@ export default class ViewMemeComponent extends Component{
         }
         this.onSubmitComment = (e)=>{
             e.preventDefault();
-            // if(this.state.userComment.name.length==0 
-            //     || this.state.userComment.text.length==0){
-            //         alert("Enter your name and comment");
-            //     }
             const requestOptions = {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -87,22 +84,38 @@ export default class ViewMemeComponent extends Component{
         return (
             <div className="container">
                 <ul class="list-group">
-                    <li class="list-group-item">{this.state.meme.name}</li>
-                    <ul class="list-group">
-                        <li class="list-group-item">{this.state.meme.caption}</li>
-                        <li class="list-group-item">
-                            <img src={this.state.meme.url} />
-                        </li>
-                    </ul>
-                    <form>
-                        <div class="form-group">
-                            <input type="text" class="form-control" onChange={this.onNameChange} placeholder="Enter your Name" required/>
-                        </div>
-                        <div class="form-group">
-                            <input type="text" class="form-control" onChange={this.onCommentChange} placeholder="Comment..." required/>
-                        </div>
-                        <button type="submit" class="btn btn-submit" onClick={this.onSubmitComment}>Submit</button>
-                    </form>
+                    <Row>
+                        <Col>
+                            <Card>
+                                <Card.Body>
+                                    <Card.Title>{this.state.meme.name}</Card.Title>
+                                    <Card.Text>
+                                        {this.state.meme.caption}
+                                    </Card.Text>
+                                    <Card.Img variant="bottom" src={this.state.meme.url}  />
+                                    <Card.Footer>
+
+
+                                    <Form>
+                                        <FormGroup>
+                                            <input type="text" class="form-control" 
+                                            onChange={this.onNameChange} placeholder="Name" required/>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <input type="text" class="form-control" 
+                                            onChange={this.onCommentChange} placeholder="Comment" required/>
+                                        </FormGroup>
+                                        <Button onClick={this.onSubmitComment}>Submit</Button>
+                                    </Form>
+                                    </Card.Footer>
+                                </Card.Body>
+                            </Card>
+                        </Col>
+                    </Row>
+
+
+
+                    
                     <ul class="list-group">
                         {
                             this.state.commentList.map(meme=>{
