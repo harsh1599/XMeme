@@ -8,14 +8,13 @@ const fs = require('fs');
 const credentials = fs.readFileSync(__dirname+'/certificates/X509-cert-1619338183590812891.pem');
 require('dotenv').config();
 const app = express();
-const port = process.env.PORT || 5000
+const port = process.env.PORT || 9000
 app.use(cors());
 app.use(express.json());
 
 
 
-app.get('/',function(req,res){
-    // res.json('Hello');
+app.get('/memes',function(req,res){
     Meme
     .find()
     .sort({createdAt:-1})
@@ -33,11 +32,12 @@ app.get('/',function(req,res){
     .catch(err=>res.json("Error: "+err));
 });
 
-app.get('/:id', function(req,res){
+app.get('/memes/:id', function(req,res){
     console.log("Look for me! ", req.params.id);
     Meme
     .findById(req.params.id)
     .then(meme=>{
+        console.log('HI');
         res.json(
         {
             id: meme._id,
@@ -46,7 +46,7 @@ app.get('/:id', function(req,res){
             caption:meme.caption
         }
     )})
-    .catch(err=>res.json("Error: "+err));
+    .catch(err=>res.status('404').json("Error: Error"));
 })
 app.post('/memes', function(req,res){
     const { name, url, caption } = req.body;
@@ -62,19 +62,20 @@ app.post('/memes', function(req,res){
 });
 
 app.patch('/:id', function(req,res){
+    const updatedMeme = {};
+    if(req.body.url)updatedMeme.url=req.body.url;
+    if(req.body.caption)updatedMeme.caption=req.body.caption;
     Meme
     .findByIdAndUpdate(
         {_id: req.params.id},
         {
-            name: req.body.name,
-            url: req.body.url,
-            caption: req.body.caption
+            ...updatedMeme
         },
         function(err,result){
             if(err){
-                res.json("Error: "+err);
+                res.status('404').json('Not Found');
             } else {
-                res.json(result);
+                res.status('204').json("FoundAlright!");
             }
         }
     )
