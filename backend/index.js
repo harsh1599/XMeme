@@ -8,7 +8,7 @@ const fs = require('fs');
 const credentials = fs.readFileSync(__dirname+'/certificates/X509-cert-1619338183590812891.pem');
 require('dotenv').config();
 const app = express();
-const port = process.env.PORT || 9000
+const port = process.env.PORT || 8081
 app.use(cors());
 app.use(express.json());
 
@@ -19,7 +19,7 @@ app.get('/memes',function(req,res){
     .find()
     .sort({createdAt:-1})
     .limit(10)
-    .then(memes=>res.json(
+    .then(memes=>res.status('200').json(
         memes.map(meme=>(
             {
                 id:meme._id,
@@ -29,7 +29,6 @@ app.get('/memes',function(req,res){
             }
         ))
     ))
-    .catch(err=>res.json("Error: "+err));
 });
 
 app.get('/memes/:id', function(req,res){
@@ -38,7 +37,7 @@ app.get('/memes/:id', function(req,res){
     .findById(req.params.id)
     .then(meme=>{
         console.log('HI');
-        res.json(
+        res.status('200').json(
         {
             id: meme._id,
             name: meme.name,
@@ -49,6 +48,8 @@ app.get('/memes/:id', function(req,res){
     .catch(err=>res.status('404').json("Error: Error"));
 })
 app.post('/memes', function(req,res){
+    if(!(req.body.name && req.body.url && req.body.caption))
+        res.status('400').json("Bad Request");
     const { name, url, caption } = req.body;
     console.log("reqbody: ",req.body);
     Meme.create({
@@ -56,12 +57,15 @@ app.post('/memes', function(req,res){
         url:url,
         caption:caption
     },function(err,meme){
-        if(err)res.json("Error: "+err);
-        res.json({id:meme._id});
-    })
+        if(err){
+            console.log("Err: "+err);
+            res.status('409').json("Conflict");
+        }
+        res.status('200').json({id:meme._id});
+    });
 });
 
-app.patch('/:id', function(req,res){
+app.patch('/memes/:id', function(req,res){
     const updatedMeme = {};
     if(req.body.url)updatedMeme.url=req.body.url;
     if(req.body.caption)updatedMeme.caption=req.body.caption;
@@ -73,9 +77,10 @@ app.patch('/:id', function(req,res){
         },
         function(err,result){
             if(err){
-                res.status('404').json('Not Found');
+                if(err.name=="CastError")res.status('404').json('Not Found');
+                else if(err.name=="MongoError" && err.code==11000)res.status('409').json('Meme already exists');
             } else {
-                res.status('204').json("FoundAlright!");
+                res.status('204');
             }
         }
     )
@@ -116,20 +121,18 @@ app.post('/:id/comments', function(req,res){
     });
 });
 
-mongoose.connect("mongodb+srv://cluster0.xno2z.mongodb.net/test?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority",
-    { 
-        useNewUrlParser: true, 
-        useUnifiedTopology: true, 
-        useFindAndModify: false, 
-        useCreateIndex: true,
-        sslKey: credentials,
-        sslCert: credentials 
-    }
-)
+// mongoose.connect("mongodb+srv://cluster0.xno2z.mongodb.net/test?authSource=%24external&authMechanism=MONGODB-X509&retryWrites=true&w=majority",
+//     { 
+//         useNewUrlParser: true, 
+//         useUnifiedTopology: true, 
+//         useFindAndModify: false, 
+//         useCreateIndex: true,
+//         sslKey: credentials,
+//         sslCert: credentials 
+//     }
+// )
 
-
-
-
+mongoose.connect('mongodb://localhost:27017/xmeme', {useNewUrlParser: true});
 
 
 

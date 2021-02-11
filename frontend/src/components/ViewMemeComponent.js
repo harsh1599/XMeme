@@ -46,12 +46,12 @@ export default class ViewMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.userComment)
             };
-            fetch('https://frozen-hamlet-23059.herokuapp.com/'+this.state.memeId+'/comments', requestOptions)
+            fetch('http://localhost:8081/'+this.state.memeId+'/comments', requestOptions)
             .then(_=>{window.location="/"+this.state.memeId});
         }
     }
     componentDidMount(){
-        fetch("https://frozen-hamlet-23059.herokuapp.com/"+this.state.memeId)
+        fetch("http://localhost:8081/memes/"+this.state.memeId)
         .then(res => res.json())
         .then(
             (result) => {
@@ -62,13 +62,13 @@ export default class ViewMemeComponent extends Component{
                 console.log("single id: "+result);
             },
             (error) => {
-                this.setState({
-                    isLoaded: false,
-                    error
+                console.log("error: ", error);
+                this.setState({ 
+                    isLoaded: false
                 });
             }
         )
-        fetch("https://frozen-hamlet-23059.herokuapp.com/"+this.state.memeId+"/comments")
+        fetch("http://localhost:8081/"+this.state.memeId+"/comments")
         .then(res => res.json())
         .then(
             (result)=>{

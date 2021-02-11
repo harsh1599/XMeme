@@ -1,5 +1,4 @@
 import React, {Component} from 'react'
-import MemeComponent from './MemeComponent'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Modal, Button, Card, Row, Col, Form, FormGroup } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
@@ -22,7 +21,7 @@ export default class MemeListComponent extends Component{
             await this.setState({update:true});
             console.log("update: ",this.state.update);
             console.log("_id: ",e);
-            fetch("https://frozen-hamlet-23059.herokuapp.com/"+e.target.id)
+            fetch("http://localhost:8081/memes/"+e.target.id)
             .then(res=>res.json())
             .then(result=>{
                 this.setState({
@@ -51,17 +50,16 @@ export default class MemeListComponent extends Component{
             await this.setState({update:false});
             console.log("update: ",this.state.update);
         }
-        this.handleSubmit = (e)=>{
-            this.setState({update:false});
+        this.handleSubmit = async (e)=>{
+            e.preventDefault();
+            this.handleClose();
             const requestOptions = {
                 method: 'PATCH',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.updateMeme)
             };
-            fetch("https://frozen-hamlet-23059.herokuapp.com/"+this.state.updateMeme.id,requestOptions)
-            .then(res=>res.json())
-            .then(res=>console.log("res: ",res))
-            .then(_=>{window.location="/"});
+            fetch("http://localhost:8081/memes/"+this.state.updateMeme.id,requestOptions) 
+            window.location="/";
         }
         this.onChangeName = async (e)=>{
             await this.setState({
@@ -88,12 +86,12 @@ export default class MemeListComponent extends Component{
                     caption: e.target.value
                 }
             });
-            this.handleClose();
+            this.handleDisable();
         }
     }
 
     componentDidMount(){
-        fetch("https://frozen-hamlet-23059.herokuapp.com/")
+        fetch("http://localhost:8081/memes")
         .then(res => res.json())
         .then(
             (result) => {
@@ -148,13 +146,6 @@ export default class MemeListComponent extends Component{
                     </Modal.Header>
                     <Modal.Body>
                         <Form>
-                            <FormGroup>
-                                <label for="name">Name:</label>
-                                <input type="text" class="form-control" id="name" 
-                                    onChange={this.onChangeName} value={this.state.updateMeme.name}
-                                    required
-                                />
-                            </FormGroup>
                             <FormGroup>
                                 <label for="url">Image URL:</label>
                                 <input type="text" class="form-control" id="url" 
