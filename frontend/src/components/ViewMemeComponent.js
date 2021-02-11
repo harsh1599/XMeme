@@ -68,7 +68,7 @@ export default class ViewMemeComponent extends Component{
                 });
             }
         )
-        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes"+this.state.memeId+"/comments")
+        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.memeId+"/comments")
         .then(res => res.json())
         .then(
             (result)=>{
