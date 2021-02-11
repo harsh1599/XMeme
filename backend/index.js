@@ -85,7 +85,7 @@ app.patch('/memes/:id', function(req,res){
         }
     )
 })
-app.get('/:id/comments', function(req,res){
+app.get('/memes/:id/comments', function(req,res){
     Comment.find()
     .where('memeId')
     .equals(req.params.id)
@@ -100,7 +100,7 @@ app.get('/:id/comments', function(req,res){
     }),err=>console.log("error over here"))
     .then(memes=>res.json(memes));
 });
-app.post('/:id/comments', function(req,res){
+app.post('/memes/:id/comments', function(req,res){
     console.log("posting comment:  ", req.body);
     Meme.findById(req.params.id,function(err,meme){
         if(err){
