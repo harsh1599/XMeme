@@ -21,7 +21,7 @@ export default class MemeListComponent extends Component{
             await this.setState({update:true});
             console.log("update: ",this.state.update);
             console.log("_id: ",e);
-            fetch("http://localhost:8081/memes/"+e.target.id)
+            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+e.target.id)
             .then(res=>res.json())
             .then(result=>{
                 this.setState({
@@ -58,7 +58,7 @@ export default class MemeListComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.updateMeme)
             };
-            fetch("http://localhost:8081/memes/"+this.state.updateMeme.id,requestOptions) 
+            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.updateMeme.id,requestOptions) 
             window.location="/";
         }
         this.onChangeName = async (e)=>{
@@ -91,7 +91,7 @@ export default class MemeListComponent extends Component{
     }
 
     componentDidMount(){
-        fetch("http://localhost:8081/memes")
+        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes")
         .then(res => res.json())
         .then(
             (result) => {

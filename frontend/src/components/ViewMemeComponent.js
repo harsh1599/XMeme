@@ -46,12 +46,12 @@ export default class ViewMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.userComment)
             };
-            fetch('http://localhost:8081/'+this.state.memeId+'/comments', requestOptions)
+            fetch('http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/'+this.state.memeId+'/comments', requestOptions)
             .then(_=>{window.location="/"+this.state.memeId});
         }
     }
     componentDidMount(){
-        fetch("http://localhost:8081/memes/"+this.state.memeId)
+        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.memeId)
         .then(res => res.json())
         .then(
             (result) => {
@@ -68,7 +68,7 @@ export default class ViewMemeComponent extends Component{
                 });
             }
         )
-        fetch("http://localhost:8081/"+this.state.memeId+"/comments")
+        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes"+this.state.memeId+"/comments")
         .then(res => res.json())
         .then(
             (result)=>{
