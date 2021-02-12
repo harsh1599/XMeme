@@ -1,3 +1,10 @@
 #!/bin/bash
-cd "$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"/backend
+cd backend
+
+
+# Setup DB or any other environment variables you want to setup.
+
+
+npm i
+sudo systemctl start mongod service
 node index
