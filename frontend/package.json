@@ -14,7 +14,8 @@
     "react-router-dom": "^5.2.0",
     "react-scripts": "0.9.5",
     "react-sticky": "^6.0.3",
-    "react-ui-cards": "^2.0.0"
+    "react-ui-cards": "^2.0.0",
+    "swagger-ui-express": "^4.1.6"
   },
   "devDependencies": {},
   "scripts": {

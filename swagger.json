@@ -1,0 +1,249 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "version": "1.0.0",
+        "title": "XMemeHP",
+        "description": "Project for Viewing and uploading memes",
+        "license": {
+        "name": "MIT",
+        "url": "https://opensource.org/licenses/MIT"
+        }
+    },
+    "host": "localhost:8081",
+    "basePath": "/",
+    "tags": [
+        {
+            "name": "Memes",
+            "description": "List of Memes"
+        }
+    ],
+    "schemes": [
+        "http"
+    ],
+    "consumes": [
+        "application/json"
+    ],
+    "produces": [
+        "application/json"
+    ],
+    "paths": {
+        "/memes": {
+            "get": {
+                "tags": [
+                    "Get Memes"
+                ],
+                "summary": "Get all memes in system",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/createMeme"
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags":[
+                    "Post Memes"
+                ],
+                "summary": "Create a New Meme",
+                "parameters": [
+                    {
+                        "name": "Meme",
+                        "in": "body",
+                        "description": "Meme that we want to create",
+                        "schema": {
+                            "$ref": "#/definitions/createMeme"
+                        }
+                    }
+                ], 
+                "produces": [
+                    "application/json"
+                ],                   
+                "responses": {
+                    "200": {
+                        "description": "New Meme is created",
+                        "schema": {
+                            "$ref": "#/definitions/memeId"
+                        }   
+                    },
+                    "409":{
+                        "description":"Meme with the same details already available"
+                    }
+                }
+            }
+        },
+        "/memes/{id}":{
+            "parameters":[{
+                    "name": "MemeId",
+                    "in": "path",
+                    "description":"ID of the meme"
+                }
+            ],
+            "summary": "Reference to the meme with given ID",
+            "get":{   
+                "tags":[
+                    "Get Meme with given ID"
+                ],                   
+                "responses":
+                {
+                    "200": {
+                        "description": "Meme exists",
+                        "schema":{
+                            "$ref":"#/definitions/Meme"
+                        }
+                    },
+                    "404":{
+                        "description":"Meme does not exist"
+                    }
+                }
+                
+            },
+            "patch": {  
+                "tags":[
+                    "Update Meme with given ID"
+                ],  
+                "parameters": [
+                    {
+                        "name": "Meme",
+                        "in": "body",
+                        "description": "Details of the updated Meme",
+                        "schema": {
+                            "$ref":"#/definitions/updateMeme"
+                        }
+                    }
+                ],                       
+                "responses": {
+                    "204": {
+                        "description": "Meme is updated"
+                    },
+                    "409":{
+                        "description":"Meme with the same details already available"
+                    },
+                    "404":{
+                        "description":"Meme with the given ID does not exist"
+                    }
+                } 
+            }
+        },
+        "/memes/{id}/comments":{
+            "parameters":{
+                "name":"memeID",
+                "in":"path",
+                "description":"ID of the meme"
+            },
+            "get":{
+                "tags":[
+                    "Get all the comments for the Meme with given ID"
+                ],
+                "summary":[
+                    "Returns a list of comments for the meme with the given id"
+                ],
+                "responses":{
+                    "200":{
+                        "description":"List of Comments"
+                    }
+                }
+            },
+            "post":{
+                "tags":[
+                    "Post a comment for the Meme with given ID"
+                ],
+                "summary":[
+                    "Creates a commment for the meme with the given id"
+                ],
+                "parameters":[
+                    {
+                        "name":"comment",
+                        "in":"body",
+                        "description":"Details of the Comment",
+                        "schema":{
+                            "$ref":"#/definitions/Comment"
+                        }
+                    }
+                ],
+                "responses":{
+                    "200":{
+                        "description":"List of Comments",
+                        "schema":{
+                            "$ref":"#/definitions/memeId"
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {
+        "Meme":{
+            "required": [
+                "name",
+                "url",
+                "caption",
+                "id"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                },
+                "id":{
+                    "type": "string"
+                }
+            }
+        },
+        "createMeme": {
+            "required": [
+                "name",
+                "url",
+                "caption"
+            ],
+            "properties": {
+                "name": {
+                    "type": "string"
+                },
+                "caption": {
+                    "type": "string"
+                },
+                "url": {
+                    "type": "string"
+                }
+            }
+        }, 
+        "updateMeme":{
+            "properties":{
+                "url":{
+                    "type":"string"
+                },
+                "caption":{
+                    "type" :"string"
+                }
+            }
+        },
+        "memeId":{
+            "properties":{
+                "id":{
+                    "type":"string"
+                }
+            }
+        },
+        "Comment":{
+            "required":[
+                "name",
+                "text"
+            ],
+            "properties":{
+                "name":{
+                    "type":"string"
+                },
+                "text":{
+                    "type":"string"
+                }
+            }
+        }
+    }
+}

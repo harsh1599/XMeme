@@ -110,7 +110,7 @@ export default class MemeListComponent extends Component{
     }
     render(){
         return (
-            <div class="container">
+            <div class="container" style={{height:'600px',overflowY:'scroll'}}>
                 <ul class="list-group">
                     {
                         this.state.memeList.map((meme,index)=>{

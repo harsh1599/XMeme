@@ -96,7 +96,7 @@ export default class CreateMemeComponent extends Component{
         return (
             <div class="container">
                 <Form>
-                    <h4>Post Memes</h4>
+                    <h4>XMeme</h4>
                     <FormGroup>
                         <Row>
                             <Col>
