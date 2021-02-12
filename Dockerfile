@@ -1,6 +1,7 @@
 FROM node:latest
-WORKDIR /backend
-COPY ./package.json /backend
+WORKDIR /frontend
+COPY ./frontend/package.json .
 RUN npm install
-COPY ./backend .
-CMD ["node","index.js"]
+COPY ./frontend/. .
+EXPOSE 3000
+CMD ["npm","start"]

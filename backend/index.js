@@ -13,7 +13,7 @@ app.use(express.json());
 
 
 const swaggerUi = require('swagger-ui-express');
-swaggerDocument = require('../swagger.json');
+swaggerDocument = require('./swagger.json');
 
 app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
