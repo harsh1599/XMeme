@@ -19,9 +19,8 @@ export default class MemeListComponent extends Component{
         }
         this.onUpdate = async (e)=>{
             await this.setState({update:true});
-            console.log("update: ",this.state.update);
-            console.log("_id: ",e);
-            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+e.target.id)
+            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"
+            +e.target.id)
             .then(res=>res.json())
             .then(result=>{
                 this.setState({
@@ -36,7 +35,6 @@ export default class MemeListComponent extends Component{
             this.setState({
                 disableUpdateSubmit:false
             })
-            // .then(res=>console.log('updateMeme: ',this.state.updateMeme));
         }
         this.handleDisable = (e)=>{
             if(this.state.updateMeme.name==""
@@ -48,7 +46,6 @@ export default class MemeListComponent extends Component{
         }
         this.handleClose = async (e)=>{
             await this.setState({update:false});
-            console.log("update: ",this.state.update);
         }
         this.handleSubmit = async (e)=>{
             e.preventDefault();
@@ -58,7 +55,8 @@ export default class MemeListComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.updateMeme)
             };
-            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.updateMeme.id,requestOptions) 
+            fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"
+            +this.state.updateMeme.id,requestOptions) 
             window.location="/";
         }
         this.onChangeName = async (e)=>{

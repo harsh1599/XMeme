@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import CreateMemeComponent from './components/CreateMemeComponent'
 import MemeListComponent from './components/MemeListComponent'
-import NavbarComponent from  './components/NavbarComponent'
 import 'bootstrap/dist/css/bootstrap.css'
 import {
   BrowserRouter as Router,

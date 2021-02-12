@@ -1,12 +1,11 @@
 import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
-import { Form, Card, FormGroup, Button, Row, Col, ListGroup, Badge } from 'react-bootstrap'
+import { Form, Card, FormGroup, Button, Row, Col, ListGroup, Badge, FormLabel } from 'react-bootstrap'
 
 export default class ViewMemeComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
-            isLoaded: false,
             meme:{
                 name: "",
                 url: "",
@@ -28,7 +27,6 @@ export default class ViewMemeComponent extends Component{
                     text:e.target.value
                 }
             })
-            console.log("comment: ", this.state.userComment.text);
         }
         this.onNameChange = async (e)=>{
             await this.setState({
@@ -37,7 +35,6 @@ export default class ViewMemeComponent extends Component{
                     name:e.target.value
                 }
             })
-            console.log("name: ", this.state.userComment.name);
         }
         this.onSubmitComment = (e)=>{
             e.preventDefault();
@@ -46,25 +43,19 @@ export default class ViewMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.userComment)
             };
-            fetch('http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/'+this.state.memeId+'/comments', requestOptions)
+            fetch('http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/'
+            +this.state.memeId+'/comments', requestOptions)
             .then(_=>{window.location="/"+this.state.memeId});
         }
     }
     componentDidMount(){
-        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.memeId)
+        fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"
+        +this.state.memeId)
         .then(res => res.json())
         .then(
             (result) => {
                 this.setState({
-                    isLoaded: true,
                     meme: result
-                });
-                console.log("single id: "+result);
-            },
-            (error) => {
-                console.log("error: ", error);
-                this.setState({ 
-                    isLoaded: false
                 });
             }
         )
@@ -75,10 +66,7 @@ export default class ViewMemeComponent extends Component{
                 this.setState({
                     commentList: result
                 })
-            } ,
-            (error)=>{
-                console.log("Error hai bhaiya");
-            }
+            } 
         )
     }
     render(){
@@ -98,6 +86,7 @@ export default class ViewMemeComponent extends Component{
 
 
                                     <Form>
+                                        <FormLabel>Comment</FormLabel>
                                         <FormGroup>
                                             <input type="text" class="form-control" 
                                             onChange={this.onNameChange} placeholder="Name" required/>
@@ -117,7 +106,7 @@ export default class ViewMemeComponent extends Component{
 
 
                     
-                    <ListGroup>
+                    <ListGroup style={{height:'300px', overflowY:'scroll'}}>
                         <ListGroup.Item>
                             <h4><Badge variant="secondary">Comments</Badge></h4>
                         </ListGroup.Item>

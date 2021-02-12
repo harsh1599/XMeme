@@ -73,11 +73,9 @@ export default class CreateMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.meme)
             };
-            // e.preventDefault();
             fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes", requestOptions)
             .then(response=>response.json())
             .then(_=>{window.location="/"});
-            console.log("current state: ", this.state.meme);
 
         }
         this.onPreview = (e)=>{
