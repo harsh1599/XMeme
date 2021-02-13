@@ -1,6 +1,6 @@
 # XMeme
 
-XMeme is an application for viewing and creating and interacting with memes. 
+XMeme is an application for viewing, creating and interacting with memes. 
 
 ## Installation
 
