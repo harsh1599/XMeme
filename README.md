@@ -1,4 +1,4 @@
-# Foobar
+# XMeme
 
 XMeme is an application for viewing and creating and interacting with memes. 
 
