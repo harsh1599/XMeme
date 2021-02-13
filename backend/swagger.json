@@ -37,8 +37,22 @@
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/createMeme"
-                        }
+                            "type":"array",
+                            "items":{
+                                "type":"object",
+                                "properties":{
+                                    "id":{
+                                        "type":"string"
+                                    },
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "url":{
+                                        "type":"string"
+                                    }
+                                }
+                            }
+                        }   
                     }
                 }
             },
@@ -53,7 +67,12 @@
                         "in": "body",
                         "description": "Meme that we want to create",
                         "schema": {
-                            "$ref": "#/definitions/createMeme"
+                            "type":"object",
+                            "properties":{
+                                "id":{
+                                    "type":"string"
+                                }
+                            }
                         }
                     }
                 ], 
@@ -64,7 +83,12 @@
                     "200": {
                         "description": "New Meme is created",
                         "schema": {
-                            "$ref": "#/definitions/memeId"
+                            "type":"object",
+                            "properties":{
+                                "id":{
+                                    "type":"string"
+                                }
+                            }
                         }   
                     },
                     "409":{
@@ -109,7 +133,15 @@
                         "in": "body",
                         "description": "Details of the updated Meme",
                         "schema": {
-                            "$ref":"#/definitions/updateMeme"
+                            "type":"object",
+                            "properties":{
+                                "url":{
+                                    "type":"string"
+                                },
+                                "caption":{
+                                    "type":"string"
+                                }
+                            }
                         }
                     }
                 ],                       
@@ -142,7 +174,24 @@
                 "summary": "Get all commments for a meme in system",
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema":{
+                            "type":"array",
+                            "items":{
+                                "type":"object",
+                                "properties":{
+                                    "id":{
+                                        "type":"string"
+                                    },
+                                    "name":{
+                                        "type":"string"
+                                    },
+                                    "text":{
+                                        "type":"string"
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -155,7 +204,12 @@
                     "200":{
                         "description":"OK",
                         "schema":{
-                            "$ref":"#/definitions/memeId"
+                            "type":"object",
+                            "properties":{
+                                "id":{
+                                    "type":"string"
+                                }
+                            }
                         }
                     }
                 }
@@ -187,48 +241,17 @@
                     "type": "string"
                 }
             }
-        },
-        "createMeme": {
-            "required": [
-                "name",
-                "url",
-                "caption"
-            ],
-            "properties": {
-                "name": {
-                    "type": "string"
-                },
-                "caption": {
-                    "type": "string"
-                },
-                "url": {
-                    "type": "string"
-                }
-            }
-        }, 
-        "updateMeme":{
-            "properties":{
-                "url":{
-                    "type":"string"
-                },
-                "caption":{
-                    "type" :"string"
-                }
-            }
-        },
-        "memeId":{
-            "properties":{
-                "id":{
-                    "type":"string"
-                }
-            }
-        },
+        },       
         "Comment":{
             "required":[
                 "name",
-                "text"
+                "text",
+                "memeId"
             ],
             "properties":{
+                "memeId":{
+                    "type":"string"
+                },
                 "name":{
                     "type":"string"
                 },
