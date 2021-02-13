@@ -17,9 +17,6 @@ sudo ./install.sh
 
 # 2. We’ll be running your server_run.sh as a background process (using &) so that we can run the next set of commands
 
-
-chmod +x sleep.sh
-./sleep.sh
 chmod +x server_run.sh
 
 ./server_run.sh &
