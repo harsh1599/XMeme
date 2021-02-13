@@ -17,7 +17,8 @@ export default class CreateMemeComponent extends Component{
             disableSubmit:true,
             disablePreview:true
         }
-        
+        //function for handling disable preview and update buttons
+        //state can't be submitted if name/url/caption is missing
         this.handleDisable = async ()=>{
             if(this.state.meme.name=="" 
                 || this.state.meme.url==""
@@ -35,6 +36,7 @@ export default class CreateMemeComponent extends Component{
             }
         }
 
+        //function to detect name change and setting the state accordingly
         this.onChangeName = async (e)=>{
             await this.setState({
                 meme:{
@@ -45,6 +47,7 @@ export default class CreateMemeComponent extends Component{
             this.handleDisable();
         }
 
+        //function to detect url change and setting the state accordingly
         this.onChangeUrl = async (e)=>{
             await this.setState({
                 meme:{  
@@ -55,6 +58,7 @@ export default class CreateMemeComponent extends Component{
             this.handleDisable();
         }
 
+        //function to detect caption change and setting the state accordingly
         this.onChangeCaption = async (e)=>{
             
             await this.setState({
@@ -66,6 +70,7 @@ export default class CreateMemeComponent extends Component{
             this.handleDisable();
         }
 
+        //function handling submit event
         this.onSubmit = (e)=>{
             e.preventDefault();
             const requestOptions = {
@@ -73,17 +78,19 @@ export default class CreateMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.meme)
             };
+
+            //fetch call to the db to post a meme and rerouting back to the home page.
             fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes", requestOptions)
             .then(response=>response.json())
             .then(_=>{window.location="/"});
 
         }
+        //functions for showing/hiding preview modal.
         this.onPreview = (e)=>{
             this.setState({
                 preview:true
             })
         }
-
         this.handleClose = (e)=>{
             this.setState({
                 preview:false

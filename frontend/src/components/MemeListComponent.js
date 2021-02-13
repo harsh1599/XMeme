@@ -8,15 +8,20 @@ export default class MemeListComponent extends Component{
         super(props);
         this.state = {
             error:null,
-            isLoaded:false,
             memeList: [],
+
+            //update state for showing/hiding update modal
             update: false,
+            //updated meme state
             updateMeme:{
                 name: "",
                 url: "",
                 caption: ""
             }
         }
+
+        //async function for retrieving details required to prefill in the modal
+        //and update the updateMeme state.
         this.onUpdate = async (e)=>{
             await this.setState({update:true});
             fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"
@@ -36,17 +41,23 @@ export default class MemeListComponent extends Component{
                 disableUpdateSubmit:false
             })
         }
+
+        //update can't be submitted even if one of url/caption is null
+        //enable/disable accordingly.
         this.handleDisable = (e)=>{
-            if(this.state.updateMeme.name==""
-            || this.state.updateMeme.url==""
+            if(this.state.updateMeme.url==""
             || this.state.updateMeme.caption==""
             ){
                 this.setState({disableUpdateSubmit:true})
             } else this.setState({disableUpdateSubmit:false})
         }
+
+        //function for handling modal close
         this.handleClose = async (e)=>{
             await this.setState({update:false});
         }
+
+        //function for handling submitting updated meme state.
         this.handleSubmit = async (e)=>{
             e.preventDefault();
             this.handleClose();
@@ -59,6 +70,7 @@ export default class MemeListComponent extends Component{
             +this.state.updateMeme.id,requestOptions) 
             window.location="/";
         }
+        //function to detect name change and setting the state accordingly.
         this.onChangeName = async (e)=>{
             await this.setState({
                 updateMeme: {
@@ -68,6 +80,7 @@ export default class MemeListComponent extends Component{
             })
             this.handleDisable();
         }
+        //function to detect url change and setting the state accordingly
         this.onChangeUrl = async (e)=>{
             await this.setState({
                 updateMeme: {
@@ -77,6 +90,7 @@ export default class MemeListComponent extends Component{
             })
             this.handleDisable();
         }
+        //function to detect caption change and setting the state accordingly
         this.onChangeCaption = async (e)=>{
             await this.setState({
                 updateMeme: {
@@ -88,20 +102,14 @@ export default class MemeListComponent extends Component{
         }
     }
 
+    //get all the memes once the component mounts
     componentDidMount(){
         fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes")
         .then(res => res.json())
         .then(
             (result) => {
                 this.setState({
-                    isLoaded: true,
                     memeList: result
-                });
-            },
-            (error) => {
-                this.setState({
-                    isLoaded: false,
-                    error
                 });
             }
         )

@@ -10,6 +10,9 @@ sudo n latest
 sudo npm install -g -y npm
 hash -d npm
 
+#pm2 installation 
+sudo npm install -g pm2
+
 #mongodb installation
 
 curl -fsSL https://www.mongodb.org/static/pgp/server-4.4.asc | sudo apt-key add -

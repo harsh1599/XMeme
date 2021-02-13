@@ -1,29 +1,32 @@
 const express = require('express');
 const cors = require('cors');
 const mongoose = require('mongoose');
-const router = require('express').Router();
 const Meme = require('./models/Meme');
 const Comment = require('./models/Comment');
-const fs = require('fs');
+const swaggerUi = require('swagger-ui-express');
 require('dotenv').config();
 const app = express();
 const port = process.env.PORT || 8081
 app.use(cors());
 app.use(express.json());
 
-
-const swaggerUi = require('swagger-ui-express');
+//Contains details for swagger-ui
 swaggerDocument = require('./swagger.json');
 
 app.use('/swagger-ui', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
-
+//swagger-ui served on port 8080
 app.listen(8080,()=>{
     console.log("Server listening on 8080");
 })
 
 
-
+//get all memes
 app.get('/memes',function(req,res){
+
+    //retrieve all the memes,
+    //sort them in descending order wrt. "createdAt",
+    //get the top 100 memes
+    //map the entries into required json response with 200 status
     Meme
     .find()
     .sort({createdAt:-1})
@@ -40,7 +43,13 @@ app.get('/memes',function(req,res){
     ))
 });
 
+
+//get meme with _id equal to {id}
 app.get('/memes/:id', function(req,res){
+
+    //Retrieve the meme with the id from request parameters,
+    //if found structure it in required json format with status code 200,
+    //else return error 404(Not found) with an error message
     Meme
     .findById(req.params.id)
     .then(meme=>{
@@ -54,8 +63,16 @@ app.get('/memes/:id', function(req,res){
     )})
     .catch(err=>res.status('404').json("Error: Meme Not Found"));
 })
+
+//post a meme
 app.post('/memes', function(req,res){    
     const { name, url, caption } = req.body;
+
+    //create a meme
+    //If successful, return 200 with the id of the meme
+    //else if a ValidationError occured, that means a required field is missing,
+    //then send a "Bad Request" message with status 400
+    //else return 409 with "conflict" message as the entry is already present in the db
     Meme.create({
         name:name,
         url:url,
@@ -68,7 +85,18 @@ app.post('/memes', function(req,res){
     });
 });
 
+//partially update the meme
+//update either or both from {url,caption} and not the name.
 app.patch('/memes/:id', function(req,res){
+
+
+    //Find the meme by id,
+    //update by passing deep copy of the updatedMeme.
+    //CastError indicates that the meme with the given id is not found,
+    //Hence return 404 status code.
+    //MongoError indicates that an entry with same 3 fields is already present 
+    //Hence return conflict along with 409.
+    //Else if successful return 204(No Content)
     const updatedMeme = {};
     if(req.body.url)updatedMeme.url=req.body.url;
     if(req.body.caption)updatedMeme.caption=req.body.caption;
@@ -88,7 +116,12 @@ app.patch('/memes/:id', function(req,res){
         }
     )
 })
+
+//get all comments associated with a meme.
 app.get('/memes/:id/comments', function(req,res){
+
+    //Find all the entries in which memeId equals given id.
+    //returns an array of comments
     Comment.find()
     .where('memeId')
     .equals(req.params.id)
@@ -103,7 +136,14 @@ app.get('/memes/:id/comments', function(req,res){
     }),err=>console.log("error over here"))
     .then(memes=>res.status('200').json(memes));
 });
+
+//post a comment on a meme
 app.post('/memes/:id/comments', function(req,res){
+
+    //find meme, if not found return 404
+    //else try to create a comment,
+    //Send 400 if ValidationError occurs(Entry field missing)
+    //Send 200 along with id of the comment in the body if successful
     Meme.findById(req.params.id,function(err,meme){
         if(err){
             res.status('404').json("Not found: "+err);
@@ -124,6 +164,9 @@ app.post('/memes/:id/comments', function(req,res){
     });
 });
 
+
+//connecting to local mongo db running on 27017
+//dbname: xmeme
 mongoose.connect('mongodb://localhost:27017/xmeme', {useNewUrlParser: true});
 
 

@@ -2,24 +2,34 @@ import React, {Component} from 'react'
 import 'bootstrap/dist/css/bootstrap.css'
 import { Form, Card, FormGroup, Button, Row, Col, ListGroup, Badge, FormLabel } from 'react-bootstrap'
 
+
+//Component that'll display the contents of the meme with id 
+//equal to the one passed in props
 export default class ViewMemeComponent extends Component{
     constructor(props){
         super(props);
         this.state = {
+
+            //state of the current meme
             meme:{
                 name: "",
                 url: "",
                 caption: ""
             },
             memeId:props.match.params.id,
+            //list of the comments associated with this meme
             commentList:[],
+            //state for userComment
             userComment:{
                 memeId:props.match.params.id,
                 name:"",
                 text:""
             },
+            //state for disabling/enabling submit button in update modal
             disableUpdateSubmit:true
         }
+
+        //async function to detect comment changes and updating text in the comment state
         this.onCommentChange = async (e)=>{
             await this.setState({
                 userComment:{
@@ -28,6 +38,8 @@ export default class ViewMemeComponent extends Component{
                 }
             })
         }
+
+        //async function to detect comment changes and updating name in the comment state
         this.onNameChange = async (e)=>{
             await this.setState({
                 userComment:{
@@ -36,6 +48,8 @@ export default class ViewMemeComponent extends Component{
                 }
             })
         }
+
+        //function to submit comment
         this.onSubmitComment = (e)=>{
             e.preventDefault();
             const requestOptions = {
@@ -43,12 +57,19 @@ export default class ViewMemeComponent extends Component{
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(this.state.userComment)
             };
+
+            //fetch call to post the comment into the db
             fetch('http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/'
             +this.state.memeId+'/comments', requestOptions)
             .then(_=>{window.location="/"+this.state.memeId});
         }
     }
+
+    //code that runs once the component mounts
     componentDidMount(){
+        
+        //fetch call to get the meme from the db 
+        // and updating the meme state.
         fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"
         +this.state.memeId)
         .then(res => res.json())
@@ -59,6 +80,9 @@ export default class ViewMemeComponent extends Component{
                 });
             }
         )
+        
+        //fetch call to the get all the comments from the db
+        //and updating the commentList state
         fetch("http://ec2-18-220-82-158.us-east-2.compute.amazonaws.com:8081/memes/"+this.state.memeId+"/comments")
         .then(res => res.json())
         .then(

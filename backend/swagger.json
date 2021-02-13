@@ -127,51 +127,43 @@
             }
         },
         "/memes/{id}/comments":{
-            "parameters":{
-                "name":"memeID",
-                "in":"path",
-                "description":"ID of the meme"
-            },
+            
+            "parameters":[
+                {
+                    "name": "MemeId",
+                    "in": "path",
+                    "description":"ID of the meme"
+                }
+            ],
             "get":{
-                "tags":[
-                    "Get all the comments for the Meme with given ID"
+                "tags": [
+                    "Get Comments"
                 ],
-                "summary":[
-                    "Returns a list of comments for the meme with the given id"
-                ],
-                "responses":{
-                    "200":{
-                        "description":"List of Comments"
+                "summary": "Get all commments for a meme in system",
+                "responses": {
+                    "200": {
+                        "description": "OK"
                     }
                 }
             },
             "post":{
                 "tags":[
-                    "Post a comment for the Meme with given ID"
+                    "Post Comment"
                 ],
-                "summary":[
-                    "Creates a commment for the meme with the given id"
-                ],
-                "parameters":[
-                    {
-                        "name":"comment",
-                        "in":"body",
-                        "description":"Details of the Comment",
-                        "schema":{
-                            "$ref":"#/definitions/Comment"
-                        }
-                    }
-                ],
-                "responses":{
+                "summary": "Post a comment on a meme",
+                "responses": {
                     "200":{
-                        "description":"List of Comments",
+                        "description":"OK",
                         "schema":{
                             "$ref":"#/definitions/memeId"
                         }
                     }
                 }
             }
+            
         }
+        
+        
     },
     "definitions": {
         "Meme":{
@@ -246,4 +238,5 @@
             }
         }
     }
+    
 }
